@@ -315,6 +315,92 @@ resource "aws_instance" "example" {
 * Terraform also automatically loads a number of variable definitions files if they are present:
 Files named exactly `terraform.tfvars` or `terraform.tfvars.json`.
 Any files with names ending in `.auto.tfvars` or `.auto.tfvars.json`.
+### JOIP task - 24-03-2023
+* create a vnet with 6 subnets
+* for above task done by using `variables`,`count`,`cidrsubnet`,`values.tfvars file`
+* provider.tf
+```t
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "=3.48.0"
+    }
+  }
+}
+
+provider "azurerm" {
+  features {}
+
+}
+```
+* main.tf 
+```t
+resource "azurerm_resource_group" "vnetrg" {
+  name     = var.resource_group_name
+  location = var.location
+
+}
+
+resource "azurerm_virtual_network" "vnet1" {
+  name                = var.virtual_network_name
+  resource_group_name = azurerm_resource_group.vnetrg.name
+  location            = azurerm_resource_group.vnetrg.location
+  address_space       = var.address_space
+
+  depends_on = [
+    azurerm_resource_group.vnetrg
+  ]
+}
+
+resource "azurerm_subnet" "subnets" {
+  count                = length(var.subnets)
+  name                 = var.subnets[count.index]
+  resource_group_name  = azurerm_resource_group.vnetrg.name
+  virtual_network_name = azurerm_virtual_network.vnet1.name
+  address_prefixes     = [cidrsubnet(var.address_space[0], 8, count.index)]
+
+  depends_on = [
+    azurerm_virtual_network.vnet1
+  ]
+}
+```
+* inputs.tf (variables file)
+```t
+variable "resource_group_name" {
+  type    = string
+  default = "vnetrg"
+}
+variable "location" {
+  type    = string
+  default = "East US"
+}
+variable "virtual_network_name" {
+  type    = string
+  default = "vnet1"
+}
+variable "address_space" {
+  type    = list(string)
+  default = ["192.168.0.0/16"]
+}
+variable "subnets" {
+  type    = list(string)
+  default = ["subnet1", "subnet2", "subnet3", "subnet4", "subnet5", "subnet6"]
+
+}
+```
+* values.tfvars
+```t
+resource_group_name = "vnetgroup"
+location = "Central India"
+virtual_network_name = "vnet2"
+address_space = [ "10.0.0.0/16" ]
+subnets = [ "app1","app2","app3","db1","db2","db3" ]
+```
+* without using values.tfvars
+![preview](images/tf30.png)
+![preview](images/tf31.png)
+
 ### Ntier Architecture Creation from Terraform
 * **Azure Ntier**
 * First now Creating Ntier network with 4 subnets `app1,app2,db1,db2` without using variables
