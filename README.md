@@ -312,6 +312,9 @@ resource "aws_instance" "example" {
   * As environment variables.
 * `terraform apply -var "region=ap-south-2" -var "ntier-vpc-range=10.10.0.0/16"`
 * `terraform apply -var-file values.tfvars`
+* Terraform also automatically loads a number of variable definitions files if they are present:
+Files named exactly `terraform.tfvars` or `terraform.tfvars.json`.
+Any files with names ending in `.auto.tfvars` or `.auto.tfvars.json`.
 ### Ntier Architecture Creation from Terraform
 * **Azure Ntier**
 * First now Creating Ntier network with 4 subnets `app1,app2,db1,db2` without using variables
@@ -354,3 +357,5 @@ resource "azurerm_virtual_network" "ntiervnet" {
 ![preview](images/tf27.png)
 ![preview](images/tf28.png)
 ![preview](images/tf29.png)
+
+
