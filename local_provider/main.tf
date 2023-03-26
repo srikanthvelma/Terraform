@@ -9,7 +9,7 @@ terraform {
 
   resource "local_file" "test" {
     content  = "Hello This is from Terraform"
-    filename = "D:/TRAINING/JIOP/Terraform/test.txt"
+    filename = "D:/TRAINING/JIOP/Terraform/test1.txt"
 
   }
 

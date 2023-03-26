@@ -316,6 +316,10 @@ resource "aws_instance" "example" {
 Files named exactly `terraform.tfvars` or `terraform.tfvars.json`.
 Any files with names ending in `.auto.tfvars` or `.auto.tfvars.json`.
 ### JOIP task - 24-03-2023
+* **Count**: is a meta-argument defined by the Terraform language. It can be used with modules and with every resource type.The `count` meta-argument accepts a whole number, and creates that many instances of the resource or module. Each instance has a distinct infrastructure object associated with it, and each is separately created, updated, or destroyed when the configuration is applied.
+* Ex: `count = length(var.subnets)`
+* **length**:
+* 
 * create a vnet with 6 subnets
 * for above task done by using `variables`,`count`,`cidrsubnet`,`values.tfvars file`
 * provider.tf
@@ -400,7 +404,82 @@ subnets = [ "app1","app2","app3","db1","db2","db3" ]
 * without using values.tfvars
 ![preview](images/tf30.png)
 ![preview](images/tf31.png)
+* with using values.tfvars file
+* `terraform apply -var-file values.tfvars`
+* ![preview](images/tf32.png)
+#### Creating vnet with `objects in variables`
+* main.tf
+```t
+resource "azurerm_resource_group" "vnetrg" {
+  name     = var.resource_group_info.rg_name
+  location = var.resource_group_info.location
 
+}
+
+resource "azurerm_virtual_network" "vnet1" {
+  name                = var.virtual_network_info.vnet_name
+  resource_group_name = azurerm_resource_group.vnetrg.name
+  location            = azurerm_resource_group.vnetrg.location
+  address_space       = var.virtual_network_info.address_space
+
+  depends_on = [
+    azurerm_resource_group.vnetrg
+  ]
+}
+
+resource "azurerm_subnet" "subnets" {
+  count                = length(var.virtual_network_info.subnet_names)
+  name                 = var.virtual_network_info.subnet_names[count.index]
+  resource_group_name  = azurerm_resource_group.vnetrg.name
+  virtual_network_name = azurerm_virtual_network.vnet1.name
+  address_prefixes     = [cidrsubnet(var.virtual_network_info.address_space[0], 8, count.index)]
+
+  depends_on = [
+    azurerm_virtual_network.vnet1
+  ]
+}
+```
+* inputs.tf
+```t
+variable "resource_group_info" {
+  type = object({
+    rg_name  = string
+    location = string
+  })
+  default = {
+    location = "East US"
+    rg_name  = "vnetrg"
+  }
+
+}
+
+variable "virtual_network_info" {
+  type = object({
+    vnet_name     = string
+    address_space = list(string)
+    subnet_names  = list(string)
+  })
+  default = {
+    vnet_name     = "vnet1"
+    address_space = ["192.168.0.0/16"]
+    subnet_names  = ["subnet1", "subnet2", "subnet3", "subnet4", "subnet5", "subnet6"]
+  }
+}
+```
+* with values.tfvars file
+* values.tfvars
+```t
+resource_group_info = {
+  location = "Central India"
+  rg_name  = "vnetgroup"
+}
+virtual_network_info = {
+  address_space = ["10.0.0.0/16"]
+  subnet_names  = ["app1", "app2", "app3", "db1", "db2", "db3"]
+  vnet_name     = "vnet2"
+}
+```
+![preview](images/tf34.png)
 ### Ntier Architecture Creation from Terraform
 * **Azure Ntier**
 * First now Creating Ntier network with 4 subnets `app1,app2,db1,db2` without using variables
