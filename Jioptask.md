@@ -30,3 +30,17 @@
    * c. -/+
 4. Shell Scripting: Day 2
 5. Finish the Linux Refresher [refer][https://directdevops.blog/2023/02/15/linux-refresher/]
+
+26-03-2023
+-----------
+1. Try generating random password from terraform and use it in database creation of Azure SQL Database or RDS instance
+2. Write a template to create 2 vnets/vpcs and 6 subnets each by writing the vnet/vpc only once with count.
+3. Azure:
+    * a. Create a Resource group manually
+    * b. Use a Datasource to get resource group details and create a network security group in that
+4. AWS:
+    * a. Create a Security group in default vpc.
+    * b. Use Datasource to get default vpc
+5. Try finishing core concepts and introduction to shell Become Efficient At Linux Command Line – Part 1 – Direct DevOps from Quality Thought
+6. Shell Scripting video [refer][https://www.youtube.com/watch?v=u7ygLBX0olc&list=PLuVH8Jaq3mLtx82QrxoUre38AqJQwQ3bs&index=26]
+

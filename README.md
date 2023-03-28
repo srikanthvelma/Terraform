@@ -480,7 +480,7 @@ virtual_network_info = {
 }
 ```
 ![preview](images/tf34.png)
-### Ntier Architecture Creation from Terraform
+## Ntier Architecture Creation from Terraform
 * **Azure Ntier**
 * First now Creating Ntier network with 4 subnets `app1,app2,db1,db2` without using variables
 ```t
@@ -522,5 +522,10 @@ resource "azurerm_virtual_network" "ntiervnet" {
 ![preview](images/tf27.png)
 ![preview](images/tf28.png)
 ![preview](images/tf29.png)
-
+#### Ntier : 
+  1. VNet
+  2. Subnet
+  3. Security group
+  4. Security rule
+  5.  
 

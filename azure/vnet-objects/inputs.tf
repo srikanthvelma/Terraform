@@ -7,7 +7,6 @@ variable "resource_group_info" {
     location = "East US"
     rg_name  = "vnetrg"
   }
-
 }
 
 variable "virtual_network_info" {
@@ -22,4 +21,3 @@ variable "virtual_network_info" {
     subnet_names  = ["subnet1", "subnet2", "subnet3", "subnet4", "subnet5", "subnet6"]
   }
 }
-
