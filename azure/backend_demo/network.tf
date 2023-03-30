@@ -1,6 +1,6 @@
-resource "azurerm_resource_group" "ntierrg" {
-  name     = var.resource_group_info.rg_name
-  location = var.resource_group_info.location
+resource "azurerm_resource_group" "vnetrg" {
+  name     = var.resource_group_name
+  location = var.location
 }
 resource "azurerm_virtual_network" "vnet1" {
   name                = var.virtual_network_name
@@ -24,3 +24,4 @@ resource "azurerm_subnet" "subnets" {
     azurerm_virtual_network.vnet1
   ]
 }
+
