@@ -59,7 +59,7 @@
 
 30-03-2023
 -----------
-1. Demonstate terraform backend
+Demonstate terraform backend
 -------------------------------
    * Generally terraform template can reusable and it can be used by multiple users also,so when multiple users are using same template (with same accounts or same credentials) in their local systems, so it will create the resourcs again .
    * Reason for above is , it stores different state files in their systems.
@@ -164,4 +164,49 @@ variable "subnets" {
 ![preview](images/tasktf8.png)
 
 
-### 2.call ARM template from terraform
+### call ARM template from terraform
+* ARM template for vnet creation
+```t
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "resources": [
+        {
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2022-07-01",
+            "name": "armdemovnet",
+            "location": "East US",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [ "10.0.0.0/16" ]
+                },
+                "subnets": [
+                    {
+                        "name": "default",
+                        "properties": {
+                            "addressPrefix": "10.0.0.0/24"
+                        }
+                    }
+                ]
+            }
+        }
+
+    ]
+}
+```
+* Terraform template to call ARM Template
+```t
+resource "azurerm_resource_group" "armvnet" {
+  name     = "armvnet"
+  location = "East US"
+}
+resource "azurerm_resource_group_template_deployment" "vnettemplate" {
+  name                = "vnet_armtemplate"
+  resource_group_name = azurerm_resource_group.armvnet.name
+  deployment_mode     = "Incremental"
+  template_content    = file("${path.module}/task.json")
+}
+```
+![preview](images/tasktf9.png)
+![preview](images/tasktf10.png)
+![preview](images/tasktf11.png)
