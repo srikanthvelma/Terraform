@@ -1,7 +1,7 @@
 resource "azurerm_mssql_server" "ntier_sqlserver" {
   name                         = var.sqlsrv_info.sqlsrv_name
-  resource_group_name          = azurerm_resource_group.ntierrg.name
-  location                     = azurerm_resource_group.ntierrg.location
+  resource_group_name          = local.rg_name
+  location                     = local.location
   version                      = "12.0"
   administrator_login          = var.sqlsrv_info.administrator_login
   administrator_login_password = var.sqlsrv_info.administrator_login_password

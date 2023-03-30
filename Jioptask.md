@@ -44,3 +44,7 @@
 5. Try finishing core concepts and introduction to shell Become Efficient At Linux Command Line – Part 1 – Direct DevOps from Quality Thought
 6. Shell Scripting video [refer][https://www.youtube.com/watch?v=u7ygLBX0olc&list=PLuVH8Jaq3mLtx82QrxoUre38AqJQwQ3bs&index=26]
 
+30-03-2023
+-----------
+1. Demonstate terraform backend
+2. call ARM template from terraform

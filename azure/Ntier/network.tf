@@ -5,13 +5,13 @@ resource "azurerm_resource_group" "ntierrg" {
 
 resource "azurerm_network_security_group" "ntiernsg" {
   name                = "ntiernsg"
-  resource_group_name = azurerm_resource_group.ntierrg.name
-  location            = azurerm_resource_group.ntierrg.location
+  resource_group_name = local.rg_name
+  location            = local.location
 }
 resource "azurerm_network_security_rule" "ntiernsg_rule" {
   name                        = "HTTP"
-  resource_group_name         = azurerm_resource_group.ntierrg.name
-  network_security_group_name = azurerm_network_security_group.ntiernsg.name
+  resource_group_name         = local.rg_name
+  network_security_group_name = local.nsg_name
   priority                    = 320
   direction                   = "Inbound"
   access                      = "Allow"
@@ -24,8 +24,8 @@ resource "azurerm_network_security_rule" "ntiernsg_rule" {
 }
 resource "azurerm_network_security_rule" "ntiernsg_rule2" {
   name                        = "SSH"
-  resource_group_name         = azurerm_resource_group.ntierrg.name
-  network_security_group_name = azurerm_network_security_group.ntiernsg.name
+  resource_group_name         = local.location
+  network_security_group_name = local.nsg_name
   priority                    = 300
   direction                   = "Inbound"
   access                      = "Allow"
@@ -34,7 +34,7 @@ resource "azurerm_network_security_rule" "ntiernsg_rule2" {
   destination_port_range      = "22"
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
-  
+
 
 }
 resource "azurerm_subnet_network_security_group_association" "ntiernsg_assc" {
@@ -42,7 +42,7 @@ resource "azurerm_subnet_network_security_group_association" "ntiernsg_assc" {
   network_security_group_id = azurerm_network_security_group.ntiernsg.id
 }
 resource "azurerm_virtual_network" "ntiervnet" {
-  name                = var.virtual_network_info.vnet_name
+  name                = local.vnet_name
   resource_group_name = azurerm_resource_group.ntierrg.name
   location            = azurerm_resource_group.ntierrg.location
   address_space       = var.virtual_network_info.address_space
