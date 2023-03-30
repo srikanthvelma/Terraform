@@ -43,6 +43,19 @@
     * b. Use Datasource to get default vpc
 5. Try finishing core concepts and introduction to shell Become Efficient At Linux Command Line – Part 1 – Direct DevOps from Quality Thought
 6. Shell Scripting video [refer][https://www.youtube.com/watch?v=u7ygLBX0olc&list=PLuVH8Jaq3mLtx82QrxoUre38AqJQwQ3bs&index=26]
+   
+29-03-2023
+----------
+1. Write terraform template to create the below in Azure or AWS
+   1. Network
+   2. Subnets (Using `for_each`)
+   3. Database
+   4. Virtual machine
+   5. Ensure terraform is formatted
+2. Try using locals, outputs, datasources and variables
+3. Do the Same in ARM Templates or AWS Cloud Formation
+4. shell scripting [refer][https://www.youtube.com/watch?v=RQ1ut1myiKs&list=PLuVH8Jaq3mLtx82QrxoUre38AqJQwQ3bs&index=27]     
+5. Finish Rest of the book [refer][https://directdevops.blog/2023/02/18/become-efficient-at-linux-command-line-part-1/]
 
 30-03-2023
 -----------
@@ -63,7 +76,7 @@
 ### DEMO
 1. Created Azure storage account 
 ![preview](images/tasktf5.png) 
-2. Creating terraform template with backend config
+1. Creating terraform template with backend config
 * provider.tf
 ```t
 terraform {
