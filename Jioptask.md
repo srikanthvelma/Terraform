@@ -47,4 +47,108 @@
 30-03-2023
 -----------
 1. Demonstate terraform backend
-2. call ARM template from terraform
+-------------------------------
+   * Generally terraform template can reusable and it can be used by multiple users also,so when multiple users are using same template (with same accounts or same credentials) in their local systems, so it will create the resourcs again .
+   * Reason for above is , it stores different state files in their systems.
+   * so to avoid this problems we use `Backend` 
+   * Terraform Backend defines where it stores its state data files
+   * Terraform uses a `terraform.state` file to know the status of resources it manages
+   * Normally terraform uses `local` backend.
+   * If multiple users want to access same template,we have to use `remote backend`
+   * for this we should configure `remote backend` in backend block in terraform block in provider.tf
+   * for remote backend - we config `storage account` in azure & `s3 bucket and dynamodb` in aws
+   * after this if one user executes `terraform apply` , it will store the state file in remote
+   * and then another execute terraform apply with same template , it reads the state file from remote and it doesnot create a any resources because as per state file infra already exits (note if second user doesnot change anything in template).
+   * so ovarall backend is nothing but having a commonly stored terraform state file
+### DEMO
+1. Created Azure storage account 
+![preview](images/tasktf5.png) 
+2. Creating terraform template with backend config
+* provider.tf
+```t
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "=3.48.0"
+    }
+  }
+  backend "azurerm" {
+    resource_group_name  = "terraformbackend"
+    storage_account_name = "srterraformbackend"
+    container_name       = "terraformstate"
+    key                  = "test.terraform.tfstate"
+
+  }
+}
+provider "azurerm" {
+  features {}
+
+}
+```
+* network.tf
+```t
+resource "azurerm_resource_group" "vnetrg" {
+  name     = var.resource_group_name
+  location = var.location
+}
+resource "azurerm_virtual_network" "vnet1" {
+  name                = var.virtual_network_name
+  resource_group_name = azurerm_resource_group.vnetrg.name
+  location            = azurerm_resource_group.vnetrg.location
+  address_space       = var.address_space
+
+  depends_on = [
+    azurerm_resource_group.vnetrg
+  ]
+}
+
+resource "azurerm_subnet" "subnets" {
+  count                = length(var.subnets)
+  name                 = var.subnets[count.index]
+  resource_group_name  = azurerm_resource_group.vnetrg.name
+  virtual_network_name = azurerm_virtual_network.vnet1.name
+  address_prefixes     = [cidrsubnet(var.address_space[0], 8, count.index)]
+
+  depends_on = [
+    azurerm_virtual_network.vnet1
+  ]
+}
+```
+* inputs.tf
+```t
+variable "resource_group_name" {
+  type    = string
+  default = "vnetrg"
+}
+variable "location" {
+  type    = string
+  default = "East US"
+}
+variable "virtual_network_name" {
+  type    = string
+  default = "vnet1"
+}
+variable "address_space" {
+  type    = list(string)
+  default = ["192.168.0.0/16"]
+}
+variable "subnets" {
+  type    = list(string)
+  default = ["subnet1"]
+}
+```
+3. Executing terraform template in my local system
+![preview](images/tasktf1.png)
+* now i ahve stored my template in git hub, so that i can use same template with other user
+![preview](images/tasktf2.png)
+![preview](images/tasktf3.png)
+![preview](images/tasktf4.png)
+
+4. Now Executing with another user
+![preview](images/tasktf6.png)
+![preview](images/tasktf7.png)
+![preview](images/tasktf8.png)
+
+
+### 2.call ARM template from terraform
