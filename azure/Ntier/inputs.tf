@@ -64,3 +64,18 @@ variable "vm_info" {
     vm_username = "srikanthvelma"
   }
 }
+variable "image_info" {
+  type = object({
+    publisher = string
+    offer     = string
+    sku       = string
+    version   = string
+  })
+  default = {
+    offer = "0001-com-ubuntu-server-focal"
+    publisher = "Canonical"
+    sku = "20_04-lts"
+    version = "latest"
+  }
+  
+}

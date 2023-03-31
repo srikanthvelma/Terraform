@@ -41,10 +41,10 @@ resource "azurerm_linux_virtual_machine" "ntiervms" {
     storage_account_type = "Standard_LRS"
   }
   source_image_reference {
-    publisher = "Canonical"
-    offer     = "0001-com-ubuntu-server-focal"
-    sku       = "20_04-lts"
-    version   = "latest"
+    publisher = var.image_info.publisher
+    offer     = var.image_info.offer
+    sku       = var.image_info.sku
+    version   = var.image_info.version
   }
   depends_on = [
     azurerm_network_interface.ntiernic
