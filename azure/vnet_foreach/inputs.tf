@@ -34,5 +34,19 @@ variable "subnets_info" {
       subnet_names     = "app1"
     }
   }
+}
+variable "nics_info" {
+  type = map(object({
+    ip_name = string
 
+  }))
+  default = {
+    "nic1" = {
+      ip_name = "nic1_ip"
+    }
+    "nic2" = {
+      ip_name = "nic2_ip"
+    }
+  }
+  
 }

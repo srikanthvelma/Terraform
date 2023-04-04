@@ -21,22 +21,6 @@ variable "virtual_network_info" {
   }
 }
 
-variable "sqlsrv_info" {
-  type = object({
-    sqlsrv_name                  = string
-    administrator_login          = string
-    administrator_login_password = string
-    sqldb_name                   = string
-    sku_name                     = string
-  })
-  default = {
-    administrator_login          = "srikanthvelma"
-    administrator_login_password = "Motherindia@123"
-    sku_name                     = "Basic"
-    sqldb_name                   = "employees"
-    sqlsrv_name                  = "ntiersqlsrv"
-  }
-}
 variable "vm_nic_info" {
   type = object({
     nic_name          = string
@@ -77,5 +61,4 @@ variable "image_info" {
     sku       = "20_04-lts"
     version   = "latest"
   }
-
 }

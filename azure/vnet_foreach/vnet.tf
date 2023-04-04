@@ -22,3 +22,24 @@ resource "azurerm_subnet" "ntiersubnets" {
     azurerm_virtual_network.ntiervnet
   ]
 }
+data "azurerm_subnet" "subnet1" {
+  name                 = var.subnets_info.subnet2.subnet_names
+  virtual_network_name = azurerm_resource_group.ntierrg.name
+  resource_group_name  = azurerm_resource_group.ntierrg.location
+}
+
+output "subnet_id" {
+  value = data.azurerm_subnet.subnet1
+}
+resource "azurerm_network_interface" "ntier-nics" {
+  for_each = var.nics_info
+  name                = each.key
+  resource_group_name = azurerm_resource_group.ntierrg.name
+  location            = azurerm_resource_group.ntierrg.location
+  ip_configuration {
+    name      = each.value.ip_name
+    subnet_id = data.azurerm_subnet.example.id
+    private_ip_address_allocation = "Dynamic"
+
+  }
+}
