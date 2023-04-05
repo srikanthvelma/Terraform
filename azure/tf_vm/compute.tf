@@ -49,5 +49,9 @@ resource "azurerm_linux_virtual_machine" "tfvm" {
     azurerm_network_interface.tfnic
   ]
 }
+resource "null_resource" "ansible" {
+  command = "ansible --version > version.txt"
+  
+}
 
 
