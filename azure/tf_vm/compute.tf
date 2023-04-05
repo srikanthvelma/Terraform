@@ -49,18 +49,6 @@ resource "azurerm_linux_virtual_machine" "tfvm" {
     azurerm_network_interface.tfnic
   ]
 }
-resource "null_resource" "ansible" {
-  connection {
-    type = "ssh"
-    user = var.vm_info.vm_username
-    password = var.vm_info.vm_password
-    host = azurerm_public_ip.tf_public_ip.ip_address
-  }
-  provisioner "remote-exec" {
-    inline = [
-      "ansible --version > version.txt"
-    ]
-  }
-}
+
 
 
