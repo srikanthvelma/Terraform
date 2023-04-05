@@ -13,7 +13,7 @@ pipeline{
             steps{
                 sh 'cd ~/Terraform/azure/tf_vm'
                 sh 'terraform init'
-                sh 'terraform apply -auto-approve'
+                sh './Terraform/azure/tf_vm terraform apply -auto-approve'
             }
         }
     }
