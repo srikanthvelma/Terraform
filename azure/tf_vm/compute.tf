@@ -30,6 +30,7 @@ resource "azurerm_linux_virtual_machine" "tfvm" {
   size                = var.vm_info.vm_size
   admin_username      = var.vm_info.vm_username
   admin_password = var.vm_info.vm_password
+  disable_password_authentication = true
   network_interface_ids = [
     azurerm_network_interface.tfnic.id
   ]
