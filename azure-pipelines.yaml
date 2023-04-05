@@ -1,0 +1,27 @@
+---
+pool: 
+  name: "Azure pipelines"
+  vmImage: "ubuntu-latest"
+
+trigger:
+  - main
+
+jobs:
+  - job: terraform
+    displayName: ansible from terraform
+    steps:
+      - task: TerraformTaskV4@4
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          backendServiceArm: 'Azure subscription 1(4ec877ba-cab5-4dbb-be4c-940c10bdb095)'
+          backendAzureRmResourceGroupName: 'terraformbackend'
+          backendAzureRmStorageAccountName: 'srterraformbackend'
+          backendAzureRmContainerName: 'terraformstate'
+          backendAzureRmKey: 'tf/terraform.tfstate'
+      - task: TerraformTaskV4@4
+        inputs:
+          provider: 'azurerm'
+          command: 'apply'
+          commandOptions: '-auto-approve'
+          environmentServiceNameAzureRM: 'Azure subscription 1(1)(4ec877ba-cab5-4dbb-be4c-940c10bdb095)'
