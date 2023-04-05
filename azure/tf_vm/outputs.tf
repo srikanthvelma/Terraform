@@ -1,3 +1,3 @@
 output "print" {
-  value = "provisioner.local-exec.command"
+  value = provisioner.local-exec
 }
