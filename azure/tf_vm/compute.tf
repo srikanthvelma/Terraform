@@ -58,7 +58,7 @@ resource "null_resource" "ansible" {
   }
   provisioner "remote-exec" {
     inline = [
-      "ansible --version > version.txt"
+      "ansible --version > version2.txt"
     ]
   }
 }
