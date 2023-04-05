@@ -41,6 +41,7 @@ variable "vm_info" {
     vm_names    = list(string)
     vm_size     = string
     vm_username = string
+    vm_password = string
   })
   default = {
     vm_names    = ["websrv1"]
