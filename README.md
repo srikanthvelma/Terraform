@@ -480,8 +480,7 @@ virtual_network_info = {
 }
 ```
 ![preview](images/tf34.png)
-## Ntier Architecture Creation from Terraform
-* **Azure Ntier**
+
 * First now Creating Ntier network with 4 subnets `app1,app2,db1,db2` without using variables
 ```t
 resource "azurerm_resource_group" "ntierrg" {
@@ -522,10 +521,35 @@ resource "azurerm_virtual_network" "ntiervnet" {
 ![preview](images/tf27.png)
 ![preview](images/tf28.png)
 ![preview](images/tf29.png)
-#### Ntier : 
+### required for vm creation
   1. VNet
   2. Subnet
   3. Security group
   4. Security rule
-  5.  
+   
+
+## Topics in Terraform
+1. providers
+2. resource blocks
+3. using variables
+4. local provider
+5. tf state files
+6. tfvars file
+7. tags
+8. outputs
+9. locals
+10. count
+11. for_each -toset - map(object)
+12. Backends - for multiuser
+13. workspaces
+14. conditionals
+15. functions
+16. interpolation in terraform
+17. provisioners -local-exec - remote-exec - file provisioner -connections
+18. cloud-init -customdata or userdata
+19. terraform taint
+20. null resource
+21. modules - reusable templates
+22. lifecycle
+
 

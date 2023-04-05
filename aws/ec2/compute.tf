@@ -58,29 +58,6 @@ resource "aws_instance" "web" {
     aws_security_group.web,
     aws_ebs_volume.volume1
   ]
-  connection {
-    host        = self.public_ip
-    user        = "ubuntu"
-    private_key = file("~/.ssh/id_rsa")
-    type        = "ssh"
-
-  }
-  
-  provisioner "remote-exec" {
-    script = "apache.sh"
-  }
-
 }
-resource "aws_key_pair" "myid" {
-  key_name   = "myid_rsa"
-  public_key = file("~/.ssh/id_rsa.pub")
-}
-resource "aws_ebs_volume" "volume1" {
-  availability_zone = "us-east-1a"
-  size              = 8
-  tags = {
-    "Name" = "volume1"
-  }
 
-}
 
