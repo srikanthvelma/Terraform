@@ -1,3 +1,3 @@
 output "print" {
-    value = file("~/version.txt")
+    value = null_resource.ansible.id
 }
