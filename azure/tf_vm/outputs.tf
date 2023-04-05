@@ -1,3 +1,3 @@
 output "print" {
-    value = null_resource.ansible.id
+    value = null_resource.ansible
 }
