@@ -46,6 +46,7 @@ variable "vm_info" {
     vm_names    = ["websrv1"]
     vm_size     = "Standard_B1s"
     vm_username = "srikanthvelma"
+    vm_password = "Motherindia@123"
   }
 }
 variable "image_info" {

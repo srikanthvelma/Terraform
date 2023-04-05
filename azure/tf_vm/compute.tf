@@ -29,13 +29,10 @@ resource "azurerm_linux_virtual_machine" "tfvm" {
   location            = azurerm_resource_group.tfrg.location
   size                = var.vm_info.vm_size
   admin_username      = var.vm_info.vm_username
+  admin_password = var.vm_info.vm_password
   network_interface_ids = [
     azurerm_network_interface.tfnic.id
   ]
-  admin_ssh_key {
-    username   = var.vm_info.vm_username
-    public_key = file("~/.ssh/id_rsa.pub")
-  }
   os_disk {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
