@@ -1,3 +1,3 @@
 output "print" {
-  value = provisioner.local-exec.command
+  value = azurerm_linux_virtual_machine.tfvm.provisioner
 }
