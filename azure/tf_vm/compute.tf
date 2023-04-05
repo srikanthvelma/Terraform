@@ -46,7 +46,7 @@ resource "azurerm_linux_virtual_machine" "tfvm" {
   }
 
   provisioner "local-exec" {
-    command = "echo 'hello world'"
+    command = "echo 'hello world'"  
 
   }
 
