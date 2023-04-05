@@ -28,6 +28,7 @@ resource "azurerm_linux_virtual_machine" "tfvm" {
   resource_group_name = azurerm_resource_group.tfrg.name
   location            = azurerm_resource_group.tfrg.location
   size                = var.vm_info.vm_size
+  user_data = filebase64("ansible.sh")
   admin_username      = var.vm_info.vm_username
   admin_password = var.vm_info.vm_password
   disable_password_authentication = false
@@ -44,12 +45,6 @@ resource "azurerm_linux_virtual_machine" "tfvm" {
     sku       = var.image_info.sku
     version   = var.image_info.version
   }
-
-  provisioner "local-exec" {
-    command = "echo 'hello world'"  
-
-  }
-
   depends_on = [
     azurerm_network_interface.tfnic
   ]
