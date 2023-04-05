@@ -50,8 +50,10 @@ resource "azurerm_linux_virtual_machine" "tfvm" {
   ]
 }
 resource "null_resource" "ansible" {
-  provisioner "local-exec" {
-    command = "ansible --version > version.txt"
+  provisioner "remote-exec" {
+    inline = [
+      "ansible --version > version.txt"
+    ]
   }
 }
 
