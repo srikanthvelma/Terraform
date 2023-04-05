@@ -50,7 +50,6 @@ resource "azurerm_linux_virtual_machine" "tfvm" {
   ]
 }
 resource "null_resource" "ansible" {
-  triggers = azurerm_linux_virtual_machine.tfvm
   provisioner "local-exec" {
     command = "ansible --version > version.txt"
   }
