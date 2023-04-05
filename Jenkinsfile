@@ -5,7 +5,7 @@ pipeline{
     stages{
         stage("vcs"){
             steps{
-                git url: https://github.com/srikanthvelma/Terraform.git,
+                git url: 'https://github.com/srikanthvelma/Terraform.git',
                     branch: 'main'
             }
         }
