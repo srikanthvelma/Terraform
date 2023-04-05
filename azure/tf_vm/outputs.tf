@@ -1,3 +1,3 @@
 output "print" {
-    value = file("version.txt")
+    value = "${file("version.txt")}"
 }
