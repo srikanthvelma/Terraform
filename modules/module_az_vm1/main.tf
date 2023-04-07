@@ -1,0 +1,22 @@
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "=3.48.0"
+    }
+  }
+}
+provider "azurerm" {
+  features {
+
+  }
+}
+module "azure_vm" {
+  source = "./"
+  
+}
+
+
+
+
+
