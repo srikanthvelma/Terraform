@@ -1,32 +1,23 @@
-variable "rg_info" {
+variable "resource_group_info" {
   type = object({
     rg_name  = string
     location = string
   })
   default = {
     location = "East US"
-    rg_name  = "rg"
+    rg_name  = "tfrg"
   }
 }
-variable "vnet_info" {
+variable "virtual_network_info" {
   type = object({
     vnet_name     = string
     address_space = list(string)
-
+    subnet_names  = list(string)
   })
   default = {
     address_space = ["192.168.0.0/16"]
-    vnet_name     = "azvnet"
-  }
-}
-variable "subnet_info" {
-  type = object({
-    subnet_name = string
-    address_prefixes = list(string) 
-  })
-  default = {
-    address_prefixes = [ "192.168.0.0/24" ]
-    subnet_name = "web1"
+    subnet_names  = ["web1"]
+    vnet_name     = "tfvnet"
   }
 }
 
@@ -35,26 +26,25 @@ variable "vm_nic_info" {
     nic_name          = string
     nic_ip_name       = string
     nic_ip_allocation = string
-    public_ip_name = string
-    public_ip_allocation = string
+    subnet_index      = number
   })
   default = {
     nic_name          = "websrvnic"
     nic_ip_name       = "websrvip"
     nic_ip_allocation = "Dynamic"
-    public_ip_name = "webip"
-    public_ip_allocation = "Dynamic"
+    subnet_index      = 0
   }
 }
+
 variable "vm_info" {
   type = object({
-    vm_name    = string
+    vm_names    = string
     vm_size     = string
     vm_username = string
     vm_password = string
   })
   default = {
-    vm_name    = "redvm"
+    vm_names    = "websrv1"
     vm_size     = "Standard_B1s"
     vm_username = "srikanthvelma"
     vm_password = "Motherindia@123"
@@ -73,9 +63,4 @@ variable "image_info" {
     sku       = "20_04-lts"
     version   = "latest"
   }
-}
-variable "rollout_version" {
-  type = string
-  default = "0.0.0.1"
-  
 }

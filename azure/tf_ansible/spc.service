@@ -4,7 +4,7 @@ Description=Springpetclinic service
 [Service]
 User=srikanthvelma
 WorkingDirectory=/home/srikanthvelma
-ExecStart=/usr/bin/java -jar /home/srikanthvelma/spring-petclinic/target/spring-petclinic-3.0.0-SNAPSHOT.jar
+ExecStart=/usr/bin/java -jar /home/srikanthvelma/spring-petclinic-3.0.0-SNAPSHOT.jar
 SuccessExitStatus=101
 TimeoutStopSec=10
 Restart=on-failure

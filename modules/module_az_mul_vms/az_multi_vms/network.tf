@@ -7,9 +7,9 @@ resource "azurerm_virtual_network" "ntiervnet" {
     azurerm_resource_group.ntierrg
   ]
 }
-resource "azurerm_subnet" "ntiersubnets" {
-  name                 = var.vnet_info.subnet_name
-  address_prefixes     = var.vnet_info.address_prefixes
+resource "azurerm_subnet" "ntiersubnet" {
+  name                 = var.subnet_info.subnet_name
+  address_prefixes     = var.subnet_info.address_prefixes
   virtual_network_name = azurerm_virtual_network.ntiervnet.name
   resource_group_name  = azurerm_resource_group.ntierrg.name
 
@@ -18,17 +18,17 @@ resource "azurerm_subnet" "ntiersubnets" {
   ]
 }
 resource "azurerm_network_security_group" "ntiernsg" {
-  name                = "ntiernsg"
+  name                = var.subnet_info.nsg_name
   resource_group_name = azurerm_resource_group.ntierrg.name
   location            = azurerm_resource_group.ntierrg.location
   depends_on = [
-    azurerm_subnet.ntiersubnets
+    azurerm_subnet.ntiersubnet
   ]
 }
 resource "azurerm_network_security_rule" "ntiernsg_rule" {
   name                        = "HTTP"
   resource_group_name         = azurerm_resource_group.ntierrg.name
-  network_security_group_name = azurerm_network_security_group.ntiernsg.name
+  network_security_group_name = var.subnet_info.nsg_name
   priority                    = 320
   direction                   = "Inbound"
   access                      = "Allow"
@@ -45,7 +45,7 @@ resource "azurerm_network_security_rule" "ntiernsg_rule" {
 resource "azurerm_network_security_rule" "ntiernsg_rule2" {
   name                        = "SSH"
   resource_group_name         = azurerm_resource_group.ntierrg.name
-  network_security_group_name = azurerm_network_security_group.ntiernsg.name
+  network_security_group_name = var.subnet_info.nsg_name
   priority                    = 300
   direction                   = "Inbound"
   access                      = "Allow"
@@ -61,7 +61,7 @@ resource "azurerm_network_security_rule" "ntiernsg_rule2" {
 resource "azurerm_network_security_rule" "ntiernsg_rule3" {
   name                        = "all"
   resource_group_name         = azurerm_resource_group.ntierrg.name
-  network_security_group_name = azurerm_network_security_group.ntiernsg.name
+  network_security_group_name = var.subnet_info.nsg_name
   priority                    = 400
   direction                   = "Outbound"
   access                      = "Allow"
@@ -75,6 +75,6 @@ resource "azurerm_network_security_rule" "ntiernsg_rule3" {
   ]
 }
 resource "azurerm_subnet_network_security_group_association" "ntiernsg_assc" {
-  subnet_id                 = azurerm_subnet.ntiersubnets.id
+  subnet_id                 = azurerm_subnet.ntiersubnet.id
   network_security_group_id = azurerm_network_security_group.ntiernsg.id
 }

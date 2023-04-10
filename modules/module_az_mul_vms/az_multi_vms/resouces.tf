@@ -18,14 +18,14 @@ resource "azurerm_network_interface" "ntiernic" {
   location            = azurerm_resource_group.ntierrg.location
   ip_configuration {
     name                          = each.value.nic_ip_names 
-    subnet_id                     = azurerm_subnet.ntiersubnets.id
+    subnet_id                     = azurerm_subnet.ntiersubnet.id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.ntier_public_ips[each.key].id
   }
   depends_on = [
     azurerm_resource_group.ntierrg,
     azurerm_virtual_network.ntiervnet,
-    azurerm_subnet.ntiersubnets
+    azurerm_subnet.ntiersubnet
   ]
 }
 resource "azurerm_linux_virtual_machine" "ntiervms" {
