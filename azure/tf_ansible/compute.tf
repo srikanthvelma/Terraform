@@ -75,19 +75,23 @@ resource "null_resource" "executor" {
   provisioner "file" {
     source      = "./spc.yaml"
     destination = "/home/srikanthvelma/spc.yaml"
-
+  }
+  provisioner "file" {
+    source      = "./ansible.cfg"
+    destination = "/home/srikanthvelma/ansible.cfg"
   }
   provisioner "file" {
     source      = "./password"
     destination = "/home/srikanthvelma/password"  # we can pass privatekey also
-
   }
   provisioner "remote-exec" {
     inline = [
       "sudo apt update",
       "sudo apt install openjdk-17-jdk -y",
       "echo ${azurerm_linux_virtual_machine.tfvm.private_ip_address} >> /home/srikanthvelma/hosts",
-      "ansible-playbook --connection-password-file password -i hosts spc.yaml" # we can pass privatekey also
+      "ansible --version",
+      "echo ${azurerm_linux_virtual_machine.tfvm.private_ip_address} >> /home/srikanthvelma/.ssh/known_hosts",
+      "ansible-playbook --connection-password-file password -i hosts spc.yaml" 
     ]
   }
 }
