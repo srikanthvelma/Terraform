@@ -1,0 +1,64 @@
+---
+- name: installation and config nopcommerce application
+  hosts: all
+  become: yes
+  tasks:
+    - name: downloading MS keys and packages
+      get_url:
+        url: https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
+        dest: /tmp
+    - name: installing packages
+      apt:
+        deb: /tmp/packages-microsoft-prod.deb 
+        state: present
+    - name: install aspnetcore
+      apt:
+        name:
+          - apt-transport-https
+          - aspnetcore-runtime-7.0
+        update_cache: yes
+        state: present
+    - name: create nopcommerce directory
+      file:
+        path: /var/www/nopCommerce
+        state: directory
+    - name: download nopcommerce
+      get_url:
+        url: https://github.com/nopSolutions/nopCommerce/releases/download/release-4.60.1/nopCommerce_4.60.1_NoSource_linux_x64.zip
+        dest: /tmp
+    - name: install unzip package
+      apt:
+        name: unzip
+        state: present
+    - name: unzip nopcommerce
+      unarchive:
+        src: /tmp/nopCommerce_4.60.1_NoSource_linux_x64.zip
+        dest: /var/www/nopCommerce/
+        remote_src: yes
+    - name: create bin and logs directory
+      file:
+        path:
+          - /var/www/nopCommerce/bin
+          - /var/www/nopCommerce/logs
+        state: directory
+    - name: change file permissions
+      file: 
+        dest: ~/var/www/nopCommerce/
+        recurse: yes
+        group: www-data
+        owner: www-data
+        mode: '0777'
+    - name: copy nopcommerce service file
+      copy:
+        src: /home/srikanthvelma/nop.service
+        dest: /etc/systemd/system/nopCommerce.service
+    - name: start nopcommerce service
+      systemd:
+        name: nopCommerce
+        daemon_reload: true
+        enabled: true
+        state: started
+
+
+
+        
