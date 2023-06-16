@@ -22,6 +22,15 @@ resource "azurerm_network_interface" "tfnic" {
 
 }
 
+data "azurerm_key_vault" "sri-vault" {
+  name                = "sri-terraform"
+  resource_group_name = "vault"
+}
+data "azurerm_key_vault_secret" "vm-password" {
+  name         = "terraform-vm"
+  key_vault_id = data.azurerm_key_vault.sri-vault.id
+}
+
 resource "azurerm_linux_virtual_machine" "tfvm" {
   count               = length(var.vm_info.vm_names)
   name                = var.vm_info.vm_names[count.index]
@@ -30,7 +39,7 @@ resource "azurerm_linux_virtual_machine" "tfvm" {
   size                = var.vm_info.vm_size
   user_data = filebase64("ansible.sh")
   admin_username      = var.vm_info.vm_username
-  admin_password = var.vm_info.vm_password
+  admin_password = data.azurerm_key_vault_secret.vm-password.value
   disable_password_authentication = false
   network_interface_ids = [
     azurerm_network_interface.tfnic.id

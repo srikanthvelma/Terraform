@@ -57,7 +57,7 @@ variable "vm_info" {
     vm_name    = "redvm"
     vm_size     = "Standard_B1s"
     vm_username = "srikanthvelma"
-    vm_password = "Motherindia@123"
+    vm_password = "Srikanth@123"
   }
 }
 variable "image_info" {

@@ -210,3 +210,17 @@ resource "azurerm_resource_group_template_deployment" "vnettemplate" {
 ![preview](images/tasktf9.png)
 ![preview](images/tasktf10.png)
 ![preview](images/tasktf11.png)
+
+* to use 
+```t
+data "azurerm_key_vault" "sri-vault" {
+  name                = "sri-terraform"
+  resource_group_name = "vault"
+}
+data "azurerm_key_vault_secret" "vm-password" {
+  name         = "terraform-vm"
+  key_vault_id = data.azurerm_key_vault.sri-vault.id
+}
+
+admin_password = data.azurerm_key_vault_secret.vm-password.value
+```
